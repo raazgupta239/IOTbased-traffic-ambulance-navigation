@@ -20,17 +20,28 @@ const SignUpPage = ({ navigation, setIsLoggedIn }) => {
     }
   
     try {
+      // Step 1: Sign up the user
       const response = await axios.post(
         "https://cf48-2405-acc0-1307-2b25-00-5.ngrok-free.app/api/auth/signup",
-        {
-          email,
-          password,
-        }
+        { email, password }
       );
   
       if (response.status === 201 && response.data.success) {
         Alert.alert("Success", `Sign-up successful for: ${email}`);
-        navigation.navigate("Login");
+
+        // Step 2: Send OTP request after successful sign-up using PATCH request
+        const otpResponse = await axios.patch(
+          "https://cf48-2405-acc0-1307-2b25-00-5.ngrok-free.app/api/auth/send-otp",  // Use PATCH request
+          { email }
+        );
+
+        if (otpResponse.status === 200) {
+          // Redirect to VerifyOtp page after successful OTP request
+          console.log('Navigating with email:', email);
+          navigation.navigate("VerifyOtp", {email});
+        } else {
+          Alert.alert("Error", "Failed to send OTP.");
+        }
       } else {
         Alert.alert("Error", response.data.message || "An error occurred.");
       }
@@ -43,7 +54,6 @@ const SignUpPage = ({ navigation, setIsLoggedIn }) => {
       }
     }
   };
-  
 
   return (
     <View style={styles.container}>
