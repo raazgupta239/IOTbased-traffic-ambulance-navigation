@@ -14,20 +14,29 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         {isLoggedIn ? (
-          // Navigate to TabNavigator when logged in
+          // Main application screen after login
           <Stack.Screen 
             name="Main" 
             component={TabNavigator} 
             options={{ headerShown: false }} 
           />
         ) : (
-          // Show Login and SignUp screens when not logged in
+          // Login and SignUp screens
           <>
-            <Stack.Screen name="Login">
-              {() => <LoginPage setIsLoggedIn={setIsLoggedIn} />}
+            {/* Login Screen */}
+            <Stack.Screen 
+              name="Login" 
+              options={{ headerShown: false }}
+            >
+              {({navigation}) => <LoginPage navigation={navigation} setIsLoggedIn={setIsLoggedIn} />}
             </Stack.Screen>
-            <Stack.Screen name="SignUp">
-              {() => <SignUpPage setIsLoggedIn={setIsLoggedIn} />}
+
+            {/* Sign-Up Screen */}
+            <Stack.Screen 
+              name="SignUp" 
+              options={{ headerShown: true, title: "Sign Up" }}
+            >
+              {({navigation}) => <SignUpPage navigation={navigation} setIsLoggedIn={setIsLoggedIn} />}
             </Stack.Screen>
           </>
         )}

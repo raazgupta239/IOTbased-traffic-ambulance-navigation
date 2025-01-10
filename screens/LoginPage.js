@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { View, TextInput, StyleSheet, Alert, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 
 const LoginPage = ({ navigation, setIsLoggedIn }) => {
@@ -20,29 +20,40 @@ const LoginPage = ({ navigation, setIsLoggedIn }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
+
+      {/* Email Label and Input */}
+      <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="Enter your email"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
       />
+
+      {/* Password Label and Input */}
+      <Text style={styles.label}>Password</Text>
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder="Enter your password"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Login" onPress={handleLogin} />
+
+      {/* Login Button */}
+      <TouchableOpacity style={styles.signUpButton} onPress={handleLogin} activeOpacity={0.8}>
+        <Text style={styles.signUpButtonText}>Login</Text>
+      </TouchableOpacity>
+
+      {/* Link to SignUp */}
       <Text style={styles.switchText} onPress={() => navigation.navigate("SignUp")}>
-        Don't have an account? Sign Up
+        Don't have an account? Sign Up.
       </Text>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -51,9 +62,16 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   title: {
-    fontSize: 24,
+    fontSize: 34, // Same size as SignUp title for consistency
+    fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 5,
+    marginLeft: 5,
   },
   input: {
     height: 50,
@@ -62,6 +80,18 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingLeft: 10,
     borderRadius: 5,
+  },
+  signUpButton: {
+    backgroundColor: "#4CAF50", // Same background as in the SignUpPage
+    paddingVertical: 15,
+    borderRadius: 5,
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  signUpButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   switchText: {
     marginTop: 10,
