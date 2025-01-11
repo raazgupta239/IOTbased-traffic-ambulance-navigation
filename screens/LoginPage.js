@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { View, TextInput, StyleSheet, Alert, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 import axios from "axios";
+import { useUser } from '../userContext'; // Import the useUser hook
 
 const LoginPage = ({ navigation, setIsLoggedIn }) => {
   const [email, setEmail] = useState(""); // State for email
   const [password, setPassword] = useState(""); // State for password
-  const [user, setUser] = useState(null); // State for storing user information
+  const { setUser } = useUser(); // Access setUser from the context
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -24,26 +25,21 @@ const LoginPage = ({ navigation, setIsLoggedIn }) => {
         const userData = response.data.user; // Extract user object
         console.log(userData);
         if (userData) {
-          // Store user data in the state
+          // Store user data in the global context
           setUser(userData);
 
           // Log the user data to the console
           console.log("User Information:", userData);
 
+          Alert.alert("Success", "Login successful!");
         
+          // Navigate to TabNavigator and reset the stack
+          navigation.navigate("Main");
+
+          setIsLoggedIn(true); // Set logged-in status
         } else {
           console.error("User data not found in response:", response.data);
         }
-
-        Alert.alert("Success", "Login successful!");
-        
-        // Navigate to TabNavigator and reset the stack
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Main",  params: { user: userData } }], // Replace with TabNavigator
-        });
-
-        setIsLoggedIn(true); // Set logged-in status
       } else {
         Alert.alert("Error", response.data.message || "Login failed. Please try again.");
       }
@@ -87,15 +83,6 @@ const LoginPage = ({ navigation, setIsLoggedIn }) => {
       <Text style={styles.switchText} onPress={() => navigation.navigate("SignUp")}>
         Don't have an account? Sign Up.
       </Text>
-
-      {/* Display user info */}
-      {user && (
-        <View style={styles.userInfo}>
-          <Text>Email: {user.email}</Text>
-          <Text>Name: {user.name}</Text>
-          <Text>Phone: {user.phone}</Text>
-        </View>
-      )}
     </View>
   );
 };
@@ -142,12 +129,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: "blue",
     textAlign: "center",
-  },
-  userInfo: {
-    marginTop: 20,
-    padding: 10,
-    backgroundColor: "#f5f5f5",
-    borderRadius: 5,
   },
 });
 

@@ -13,12 +13,14 @@ import TrafficLocation from "./screens/TrafficLocation";
 import Chatbox from "./screens/Chatbox";
 import Profile from "./screens/Profile";
 
+// Context
+import { UserProvider } from './userContext'; // Import the UserProvider
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
-  const [user, setUser] = useState(null); // Track user data
 
   // Tab Navigator
   const RenderTabNavigator = () => (
@@ -41,69 +43,47 @@ export default function App() {
         tabBarInactiveTintColor: "gray",
       })}
     >
-      <Tab.Screen 
-        name="Dashboard" 
-        component={Dashboard} 
-        initialParams={{ user }} 
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen 
-        name="Traffic Location" 
-        component={TrafficLocation} 
-        initialParams={{ user }}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen 
-        name="Chatbox" 
-        component={Chatbox} 
-        initialParams={{ user }}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen 
-        name="Profile" 
-        component={Profile} 
-        initialParams={{ user }}
-        options={{ headerShown: false }}
-      />
+      <Tab.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
+      <Tab.Screen name="Traffic Location" component={TrafficLocation} options={{ headerShown: false }} />
+      <Tab.Screen name="Chatbox" component={Chatbox} options={{ headerShown: false }} />
+      <Tab.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {isLoggedIn ? (
-          // Show Tab Navigator when logged in
+    <UserProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {/* Login Screen */}
+          <Stack.Screen
+            name="Login"
+            options={{ headerShown: false }}
+          >
+            {(props) => <LoginPage {...props} setIsLoggedIn={setIsLoggedIn} />}
+          </Stack.Screen>
+
+          {/* Sign-Up Screen */}
+          <Stack.Screen
+            name="SignUp"
+            component={SignUpPage}
+            options={{ headerShown: true, title: "Sign Up" }}
+          />
+
+          {/* Verify OTP Screen */}
+          <Stack.Screen
+            name="VerifyOtp"
+            component={VerifyOtp}
+            options={{ headerShown: true, title: "Verify OTP" }}
+          />
+
+          {/* Main App (Tab Navigator) */}
           <Stack.Screen
             name="Main"
-            component={RenderTabNavigator} // Render Tab Navigator directly
+            component={RenderTabNavigator}
             options={{ headerShown: false }}
           />
-        ) : (
-          <>
-            {/* Login Screen */}
-            <Stack.Screen
-              name="Login"
-              options={{ headerShown: false }}
-            >
-              {props => <LoginPage {...props} setIsLoggedIn={setIsLoggedIn} setUser={setUser} />}
-            </Stack.Screen>
-
-            {/* Sign-Up Screen */}
-            <Stack.Screen
-              name="SignUp"
-              component={SignUpPage}
-              options={{ headerShown: true, title: "Sign Up" }}
-            />
-
-            {/* Verify OTP Screen */}
-            <Stack.Screen
-              name="VerifyOtp"
-              component={VerifyOtp}
-              options={{ headerShown: true, title: "Verify OTP" }}
-            />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 }
