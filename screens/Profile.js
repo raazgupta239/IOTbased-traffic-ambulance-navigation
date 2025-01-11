@@ -1,24 +1,53 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useUser } from '../userContext'; // Import the useUser hook
+// import AsyncStorage from '@react-native-async-storage/async-storage'; // To remove the token
 
 const Profile = () => {
-  const route = useRoute();
-  const { user } = route.params; // Extract user details
-console.log(user);
+  const { user } = useUser(); // Access user data from the context
+  const navigation = useNavigation(); // Navigation hook
+
+  const handleLogout = async () => {
+    try {
+      // Remove the token from AsyncStorage
+      // await AsyncStorage.removeItem('token');
+      
+      // Set the user to null (optional if you're using context to track user)
+      // Use the context to update the user if needed
+      // setUser(null); // If using setUser from context
+
+      // Navigate to the Login screen
+      navigation.replace('Login');
+    } catch (error) {
+      console.log('Error during logout:', error);
+    }
+  };
+
+  if (!user) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.detailValue}>User data not available</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.profileContainer}>
-        <Image
-          source={{ uri: "https://via.placeholder.com/150" }}
-          style={styles.profileImage}
-        />
-        <Text style={styles.userName}>{user.name}</Text>
-        <Text style={styles.userEmail}>{user.email}</Text>
-      </View>
-
       <View style={styles.detailsContainer}>
-        <Text style={styles.detail}>Phone: {user.phone}</Text>
+        <Text style={styles.detailLabel}>Name:</Text>
+        <Text style={styles.detailValue}>{user.name} </Text>
+
+        <Text style={styles.detailLabel}>Email:</Text>
+        <Text style={styles.detailValue}>{user.email}</Text>
+
+        <Text style={styles.detailLabel}>Phone:</Text>
+        <Text style={styles.detailValue}>{user.phone}</Text>
+
+        {/* Logout Button */}
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutButtonText}>Logout</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -29,34 +58,36 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#1c1c1c",
     padding: 20,
-  },
-  profileContainer: {
-    alignItems: "center",
-    marginBottom: 30,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 10,
-  },
-  userName: {
-    fontSize: 20,
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  userEmail: {
-    fontSize: 16,
-    color: "#ccc",
+    marginTop: 45,
   },
   detailsContainer: {
     backgroundColor: "#2c2c2c",
     borderRadius: 10,
     padding: 20,
+    marginTop: 50,
   },
-  detail: {
+  detailLabel: {
     fontSize: 16,
-    color: "#ccc",
+    color: "#888",
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  detailValue: {
+    fontSize: 18,
+    color: "#fff",
+    marginBottom: 15,
+  },
+  logoutButton: {
+    backgroundColor: "#FF5C5C", // Red background
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  logoutButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

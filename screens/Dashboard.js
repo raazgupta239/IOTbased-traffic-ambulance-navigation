@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { useUser } from '../userContext'; // Import the useUser hook
 
 const Dashboard = () => {
   const [ambulanceLocation, setAmbulanceLocation] = useState({
@@ -9,11 +10,9 @@ const Dashboard = () => {
     longitude: 85.3240,
   });
 
-  const route = useRoute();
+  const { user } = useUser(); // Access user from the context
   const navigation = useNavigation();
-  const {user} = route.params || {}; // Extract user and token from route params safely
 
-  console.log('hello world',user);
   useEffect(() => {
     const interval = setInterval(() => {
       setAmbulanceLocation((prevLocation) => ({
@@ -26,12 +25,8 @@ const Dashboard = () => {
   }, []);
 
   const navigateToProfile = () => {
-    navigation.navigate("Profile", { user});
+    navigation.navigate("Profile");
   };
-
-  // if (!user) {
-  //   return <Text>User not found. Please log in.</Text>; // Handle the case where user is undefined
-  // }
 
   return (
     <View style={styles.container}>
@@ -53,6 +48,8 @@ const Dashboard = () => {
       <TouchableOpacity style={styles.button} onPress={navigateToProfile}>
         <Image source={require('../assets/favicon.png')} style={styles.buttonImage} />
       </TouchableOpacity>
+
+      
     </View>
   );
 };
