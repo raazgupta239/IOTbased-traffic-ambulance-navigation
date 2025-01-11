@@ -8,7 +8,7 @@ import Profile from "../screens/Profile";
 
 const Tab = createBottomTabNavigator();
 
-export default function TabNavigator() {
+export default function TabNavigator({user}) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -25,16 +25,30 @@ export default function TabNavigator() {
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
+        tabBarActiveTintColor: "blue",
+        tabBarInactiveTintColor: "gray",
       })}
-      tabBarOptions={{
-        activeTintColor: "blue",
-        inactiveTintColor: "gray",
-      }}
     >
-      <Tab.Screen name="Dashboard" component={Dashboard} />
-      <Tab.Screen name="Traffic Location" component={TrafficLocation} />
-      <Tab.Screen name="Chatbox" component={Chatbox} />
-      <Tab.Screen name="Profile" component={Profile} />
+       <Tab.Screen 
+        name="Dashboard" 
+        component={Dashboard} 
+        initialParams={{ user }} // Pass user data as route params
+      />
+      <Tab.Screen 
+        name="Traffic Location" 
+        component={TrafficLocation} 
+        initialParams={{ user }}
+      />
+      <Tab.Screen 
+        name="Chatbox" 
+        component={Chatbox} 
+        initialParams={{ user }}
+      />
+      <Tab.Screen 
+        name="Profile" 
+        component={Profile} 
+        initialParams={{ user }}
+      />
     </Tab.Navigator>
   );
 }

@@ -1,25 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-const MapScreen = () => {
+const Dashboard = () => {
   const [ambulanceLocation, setAmbulanceLocation] = useState({
-    latitude: 27.7172, // Initial latitude
-    longitude: 85.3240, // Initial longitude
+    latitude: 27.7172,
+    longitude: 85.3240,
   });
 
+  const route = useRoute();
+  const navigation = useNavigation();
+  const {user} = route.params || {}; // Extract user and token from route params safely
+
+  console.log('hello world',user);
   useEffect(() => {
-    // Simulate location updates
     const interval = setInterval(() => {
       setAmbulanceLocation((prevLocation) => ({
-        latitude: prevLocation.latitude + 0.0001, // Simulate slight movement in latitude
-        longitude: prevLocation.longitude+ 0.0001, // Simulate slight movement in longitude
+        latitude: prevLocation.latitude + 0.0001,
+        longitude: prevLocation.longitude + 0.0001,
       }));
-    }, 1000); // Update every 1 second
+    }, 1000);
 
-    // Cleanup interval on unmount
     return () => clearInterval(interval);
   }, []);
+
+  const navigateToProfile = () => {
+    navigation.navigate("Profile", { user});
+  };
+
+  // if (!user) {
+  //   return <Text>User not found. Please log in.</Text>; // Handle the case where user is undefined
+  // }
 
   return (
     <View style={styles.container}>
@@ -33,14 +45,14 @@ const MapScreen = () => {
         }}
         showsUserLocation={true}
       >
-        {/* Marker for Ambulance with Custom Icon */}
         <Marker coordinate={ambulanceLocation} title="Ambulance" description="Simulated tracking of the ambulance">
-          <Image
-            source={require('../assets/ambulance.png')} // Path to the custom image
-            style={styles.markerImage}
-          />
+          <Image source={require('../assets/ambulance.png')} style={styles.markerImage} />
         </Marker>
       </MapView>
+
+      <TouchableOpacity style={styles.button} onPress={navigateToProfile}>
+        <Image source={require('../assets/favicon.png')} style={styles.buttonImage} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -53,10 +65,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   markerImage: {
-    width: 50, // Set the width to 50 pixels
-    height: 50, // Set the height to 50 pixels
-    resizeMode: 'contain', // Ensure the image scales correctly
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
+  },
+  button: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 50,
+    elevation: 5,
+  },
+  buttonImage: {
+    width: 40,
+    height: 40,
   },
 });
 
-export default MapScreen;
+export default Dashboard;

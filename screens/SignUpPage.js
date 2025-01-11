@@ -1,44 +1,46 @@
 import React, { useState } from "react";
 import { View, TextInput, StyleSheet, Alert, TouchableOpacity } from "react-native";
-import { Text } from "react-native-paper";  // Text component for labels
-import axios from "axios";  // Import axios for making API calls
+import { Text } from "react-native-paper"; // Text component for labels
+import axios from "axios"; // Import axios for making API calls
 
 const SignUpPage = ({ navigation, setIsLoggedIn }) => {
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSignUp = async () => {
-    if (!email || !password || !confirmPassword) {
+    if (!fullName || !phone || !email || !password || !confirmPassword) {
       Alert.alert("Error", "All fields are required.");
       return;
     }
-  
+
     if (password !== confirmPassword) {
       Alert.alert("Error", "Passwords do not match.");
       return;
     }
-  
+
     try {
       // Step 1: Sign up the user
       const response = await axios.post(
         "https://cf48-2405-acc0-1307-2b25-00-5.ngrok-free.app/api/auth/signup",
-        { email, password }
+        { fullName, phone, email, password }
       );
-  
+
       if (response.status === 201 && response.data.success) {
         Alert.alert("Success", `Sign-up successful for: ${email}`);
 
         // Step 2: Send OTP request after successful sign-up using PATCH request
         const otpResponse = await axios.patch(
-          "https://cf48-2405-acc0-1307-2b25-00-5.ngrok-free.app/api/auth/send-otp",  // Use PATCH request
+          "https://cf48-2405-acc0-1307-2b25-00-5.ngrok-free.app/api/auth/send-otp",
           { email }
         );
 
         if (otpResponse.status === 200) {
           // Redirect to VerifyOtp page after successful OTP request
-          console.log('Navigating with email:', email);
-          navigation.navigate("VerifyOtp", {email});
+          console.log("Navigating with email:", email);
+          navigation.navigate("VerifyOtp", { email });
         } else {
           Alert.alert("Error", "Failed to send OTP.");
         }
@@ -58,6 +60,25 @@ const SignUpPage = ({ navigation, setIsLoggedIn }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign Up</Text>
+
+      {/* Full Name Label and Input */}
+      <Text style={styles.label}>Full Name</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your full name"
+        value={fullName}
+        onChangeText={setFullName}
+      />
+
+      {/* Phone Number Label and Input */}
+      <Text style={styles.label}>Phone</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your phone number"
+        value={phone}
+        onChangeText={setPhone}
+        keyboardType="phone-pad"
+      />
 
       {/* Email Label and Input */}
       <Text style={styles.label}>Email</Text>
