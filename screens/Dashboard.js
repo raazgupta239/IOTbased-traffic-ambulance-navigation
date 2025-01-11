@@ -10,6 +10,7 @@ const Dashboard = () => {
     longitude: 85.3240,
   });
 
+  
   const { user } = useUser(); // Access user from the context
   const navigation = useNavigation();
 
@@ -30,6 +31,20 @@ const Dashboard = () => {
 
   return (
     <View style={styles.container}>
+     <View style={styles.navbar}>
+        {
+          <>
+            {/* Profile Image */}
+            <Image 
+              source={{ uri: 'https://www.w3schools.com/w3images/avatar2.png' }} // Replace with your profile image URL
+              style={styles.profileImage}
+            />
+            {/* <Text style={styles.navbarText}>Hi {user.name}</Text> */}
+            <Text style={styles.hi}>Hi</Text><Text style={styles.navbarText}>{user.name}</Text>
+          </>
+        }
+      </View>
+
       <MapView
         style={styles.map}
         initialRegion={{
@@ -48,8 +63,6 @@ const Dashboard = () => {
       <TouchableOpacity style={styles.button} onPress={navigateToProfile}>
         <Image source={require('../assets/favicon.png')} style={styles.buttonImage} />
       </TouchableOpacity>
-
-      
     </View>
   );
 };
@@ -57,6 +70,36 @@ const Dashboard = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  navbar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    // justifyContent: 'center',
+    backgroundColor: '#fff',  // White background for navbar
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    marginTop:35,
+  },
+  navbarText: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'red',
+    marginLeft:0,
+    padding:5,
+  },
+  hi: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'black',
+    marginLeft:5,
+    padding:5,
+  },
+  profileImage: {
+    width: 40,  // Set the size of the profile image
+    height: 40,
+    borderRadius: 20, // To make it circular
+    marginLeft:15,
   },
   map: {
     flex: 1,
