@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '../userContext'; // Import the useUser hook
-// import AsyncStorage from '@react-native-async-storage/async-storage'; // To remove the token
 
 const Profile = () => {
   const { user } = useUser(); // Access user data from the context
@@ -10,12 +9,7 @@ const Profile = () => {
 
   const handleLogout = async () => {
     try {
-      // Remove the token from AsyncStorage
-      // await AsyncStorage.removeItem('token');
-      
-      // Set the user to null (optional if you're using context to track user)
-      // Use the context to update the user if needed
-      // setUser(null); // If using setUser from context
+      // Handle logout functionality here
 
       // Navigate to the Login screen
       navigation.replace('Login');
@@ -34,6 +28,9 @@ const Profile = () => {
 
   return (
     <View style={styles.container}>
+      {/* Profile Information Title */}
+      <Text style={styles.profileTitle}>Profile Information</Text>
+
       <View style={styles.detailsContainer}>
         <Text style={styles.detailLabel}>Name:</Text>
         <Text style={styles.detailValue}>{user.name} </Text>
@@ -59,6 +56,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#1c1c1c",
     padding: 20,
     marginTop: 45,
+  },
+  profileTitle: {
+    fontSize: 34,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 10, // Space between title and details section
+    textAlign: 'center', // Center align the title
   },
   detailsContainer: {
     backgroundColor: "#2c2c2c",
