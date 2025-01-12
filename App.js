@@ -46,7 +46,12 @@ export default function App() {
       <Tab.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
       <Tab.Screen name="Traffic Location" component={TrafficLocation} options={{ headerShown: false }} />
       <Tab.Screen name="Chatbox" component={Chatbox} options={{ headerShown: false }} />
-      <Tab.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+      {/* <Tab.Screen name="Profile" component={Profile} options={{ headerShown: false }} /> */}
+      <Tab.Screen 
+      name="Profile" 
+      children={() => <Profile setIsLoggedIn={setIsLoggedIn} />} // Pass setIsLoggedIn as a prop
+      options={{ headerShown: false }} 
+    />
     </Tab.Navigator>
   );
 

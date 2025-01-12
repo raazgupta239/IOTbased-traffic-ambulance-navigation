@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
 import { useUser } from '../userContext'; // Import the useUser hook
 
-const Profile = () => {
-  const { user } = useUser(); // Access user data from the context
+const Profile = ({ setIsLoggedIn }) => {
+  const { user,logout } = useUser(); // Access user data from the context
   const navigation = useNavigation(); // Navigation hook
 
   const handleLogout = async () => {
@@ -12,7 +13,10 @@ const Profile = () => {
       // Handle logout functionality here
 
       // Navigate to the Login screen
-      navigation.replace('Login');
+      // navigation.replace('Login');
+      logout(); 
+      setIsLoggedIn(false); // Log out the user
+      // navigation.navigate('Login');
     } catch (error) {
       console.log('Error during logout:', error);
     }
