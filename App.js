@@ -87,6 +87,7 @@ export default function App() {
             component={VerifyOtp}
             options={{ headerShown: true, title: "Verify OTP" }}
           />
+          
           </>
           )}
         </Stack.Navigator>
