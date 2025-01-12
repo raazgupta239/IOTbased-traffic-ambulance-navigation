@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, StyleSheet, Alert, TouchableOpacity } from "react-native";
+import { View, TextInput, StyleSheet, Alert, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { Text } from "react-native-paper";
 import axios from "axios";
 import { useUser } from '../userContext'; // Import the useUser hook
@@ -50,40 +50,45 @@ const LoginPage = ({ navigation, setIsLoggedIn }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <Text style={styles.title}>Login</Text>
 
-      {/* Email Input */}
-      <Text style={styles.label}>Email</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
+        {/* Email Input */}
+        <Text style={styles.label}>Email</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
 
-      {/* Password Input */}
-      <Text style={styles.label}>Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
+        {/* Password Input */}
+        <Text style={styles.label}>Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
 
-      {/* Login Button */}
-      <TouchableOpacity style={styles.signUpButton} onPress={handleLogin} activeOpacity={0.8}>
-        <Text style={styles.signUpButtonText}>Login</Text>
-      </TouchableOpacity>
+        {/* Login Button */}
+        <TouchableOpacity style={styles.signUpButton} onPress={handleLogin} activeOpacity={0.8}>
+          <Text style={styles.signUpButtonText}>Login</Text>
+        </TouchableOpacity>
 
-      {/* Link to SignUp */}
-      <Text style={styles.switchText} onPress={() => navigation.navigate("SignUp")}>
-        Don't have an account? Sign Up.
-      </Text>
-    </View>
+        {/* Link to SignUp */}
+        <Text style={styles.switchText} onPress={() => navigation.navigate("SignUp")}>
+          Don't have an account? Sign Up.
+        </Text>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -92,6 +97,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 16,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: "center",
   },
   title: {
     fontSize: 40,
