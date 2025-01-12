@@ -17,7 +17,7 @@ const LoginPage = ({ navigation, setIsLoggedIn }) => {
 
     try {
       const response = await axios.post(
-        "https://cf48-2405-acc0-1307-2b25-00-5.ngrok-free.app/api/auth/login",
+        "https://723a-110-44-118-28.ngrok-free.app/api/auth/login",
         { email, password }
       );
 
