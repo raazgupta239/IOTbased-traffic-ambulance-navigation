@@ -1,17 +1,39 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useState, useContext } from "react";
 
-// Create a Context for User data
+// Create a context for user data
 const UserContext = createContext();
 
-// Custom hook to access user data
-export const useUser = () => useContext(UserContext);
+// Custom hook to use user context
+export const useUser = () => {
+  return useContext(UserContext);
+};
 
-// UserProvider component that will wrap the app and provide user data
+// Provider component to wrap around the app
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Track user data
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    token: "",
+  });
+
+  // Function to update user data
+  const updateUser = (userData) => {
+    setUser(userData);
+  };
+
+  // Function to clear user data (logout)
+  const logout = () => {
+    setUser({
+      name: "",
+      email: "",
+      phone: "",
+      token: "",
+    });
+  };
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser: updateUser, logout }}>
       {children}
     </UserContext.Provider>
   );

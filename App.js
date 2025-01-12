@@ -53,7 +53,16 @@ export default function App() {
   return (
     <UserProvider>
       <NavigationContainer>
+        
         <Stack.Navigator>
+          
+           {/* Main App (Tab Navigator) */}
+           <Stack.Screen
+            name="Main"
+            component={RenderTabNavigator}
+            options={{ headerShown: false }}
+          />
+
           {/* Login Screen */}
           <Stack.Screen
             name="Login"
@@ -76,12 +85,7 @@ export default function App() {
             options={{ headerShown: true, title: "Verify OTP" }}
           />
 
-          {/* Main App (Tab Navigator) */}
-          <Stack.Screen
-            name="Main"
-            component={RenderTabNavigator}
-            options={{ headerShown: false }}
-          />
+         
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>
