@@ -34,7 +34,7 @@ const LoginPage = ({ navigation, setIsLoggedIn }) => {
           Alert.alert("Success", "Login successful!");
         
           // Navigate to TabNavigator and reset the stack
-          navigation.navigate("Main");
+          // navigation.navigate("Main");
 
           setIsLoggedIn(true); // Set logged-in status
         } else {
