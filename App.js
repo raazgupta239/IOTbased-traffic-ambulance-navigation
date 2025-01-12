@@ -55,14 +55,17 @@ export default function App() {
       <NavigationContainer>
         
         <Stack.Navigator>
-          
+        {isLoggedIn ? (
+          <>
            {/* Main App (Tab Navigator) */}
            <Stack.Screen
             name="Main"
             component={RenderTabNavigator}
             options={{ headerShown: false }}
           />
-
+          </>
+          ) : (
+            <>
           {/* Login Screen */}
           <Stack.Screen
             name="Login"
@@ -84,8 +87,9 @@ export default function App() {
             component={VerifyOtp}
             options={{ headerShown: true, title: "Verify OTP" }}
           />
-
-         
+          
+          </>
+          )}
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>
